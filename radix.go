@@ -38,10 +38,3 @@ func Ints(source, buffer []int, size int) {
 	}
 }
 
-func IntsEx(source []int) {
-	var buffer []int
-	var size int
-	size = len(source)
-	buffer = make([]int, size)
-	Ints(source, buffer, size)
-}
