@@ -1,7 +1,8 @@
 package radix
 
 const (
-	numCounters = 256
+	radix       = 8
+	numCounters = 1 << radix
 )
 
 func Ints(source, buffer []int, size int) {
@@ -10,7 +11,7 @@ func Ints(source, buffer []int, size int) {
 	var pos, i, curr, prev int
 	var num byte
 	var sorted bool
-	for shift = 0; shift < (intSize * 8); shift += 8 {
+	for shift = 0; shift < (intSize * radix); shift += radix {
 		for i = 0; i < numCounters; i++ {
 			counters[i] = 0
 		}
