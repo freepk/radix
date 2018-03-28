@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+const (
+	benchArraySize = 100000
+)
+
 func testArraySeq(size int) []int {
 	data := make([]int, size)
 	for i := 0; i < size; i++ {
@@ -22,6 +26,15 @@ func testArrayRnd(size int) []int {
 	return data
 }
 
+func TestRadixNotSwaped(t *testing.T) {
+	source := []int{14878831, 15503653, 3207093}
+	buffer := make([]int, 3)
+	Ints(source, buffer, 3)
+	if !sort.IntsAreSorted(source) {
+		t.Fail()
+	}
+}
+
 func TestRadixSort(t *testing.T) {
 	iter := 1024
 	size := 1024
@@ -35,24 +48,22 @@ func TestRadixSort(t *testing.T) {
 	}
 }
 
-func BenchmarkRadixSortRnd100000(b *testing.B) {
+func BenchmarkRadixSortRnd(b *testing.B) {
 	b.StopTimer()
-	size := 100000
-	original := testArrayRnd(size)
-	buffer := make([]int, size)
-	source := make([]int, size)
+	original := testArrayRnd(benchArraySize)
+	buffer := make([]int, benchArraySize)
+	source := make([]int, benchArraySize)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		copy(source, original)
-		Ints(source, buffer, size)
+		Ints(source, buffer, benchArraySize)
 	}
 }
 
-func BenchmarkStandartSortRnd100000(b *testing.B) {
+func BenchmarkStandartSortRnd(b *testing.B) {
 	b.StopTimer()
-	size := 100000
-	original := testArrayRnd(size)
-	source := make([]int, size)
+	original := testArrayRnd(benchArraySize)
+	source := make([]int, benchArraySize)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		copy(source, original)
@@ -60,24 +71,22 @@ func BenchmarkStandartSortRnd100000(b *testing.B) {
 	}
 }
 
-func BenchmarkRadixSortSeq100000(b *testing.B) {
+func BenchmarkRadixSortSeq(b *testing.B) {
 	b.StopTimer()
-	size := 100000
-	original := testArraySeq(size)
-	buffer := make([]int, size)
-	source := make([]int, size)
+	original := testArraySeq(benchArraySize)
+	buffer := make([]int, benchArraySize)
+	source := make([]int, benchArraySize)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		copy(source, original)
-		Ints(source, buffer, size)
+		Ints(source, buffer, benchArraySize)
 	}
 }
 
-func BenchmarkStandartSortSeq100000(b *testing.B) {
+func BenchmarkStandartSortSeq(b *testing.B) {
 	b.StopTimer()
-	size := 100000
-	original := testArraySeq(size)
-	source := make([]int, size)
+	original := testArraySeq(benchArraySize)
+	source := make([]int, benchArraySize)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		copy(source, original)
