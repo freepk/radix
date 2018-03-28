@@ -25,6 +25,9 @@ func Ints(source, buffer []int, size int) {
 			prev = curr
 		}
 		if sorted {
+			if (shift / radix % 2) == 1 {
+				copy(buffer, source)
+			}
 			return
 		}
 		pos = 0
