@@ -4,23 +4,16 @@ const (
 	numCounters = 256
 )
 
-var (
-	emptyCounters []int
-)
-
-func init() {
-	emptyCounters = make([]int, numCounters)
-}
-
 func Ints(source, buffer []int, size int) {
 	var shift byte
-	var counters []int
+	var counters [numCounters]int
 	var pos, i, curr, prev int
 	var num byte
 	var sorted bool
-	counters = make([]int, numCounters)
 	for shift = 0; shift < (intSize * 8); shift += 8 {
-		copy(counters, emptyCounters)
+		for i = 0; i < numCounters; i++ {
+			counters[i] = 0
+		}
 		sorted = true
 		prev = source[0]
 		for i = 0; i < size; i++ {
