@@ -20,9 +20,9 @@ func Ints(source, buffer []int, size int) {
 		prev = source[0]
 		for i = 0; i < size; i++ {
 			curr = source[i]
-			sorted = sorted && (prev <= curr)
 			num = (curr >> shift) & radixMask
 			counters[num]++
+			sorted = sorted && (prev <= curr)
 			prev = curr
 		}
 		if sorted {
@@ -36,10 +36,11 @@ func Ints(source, buffer []int, size int) {
 			pos, counters[i] = (pos + counters[i]), pos
 		}
 		for i = 0; i < size; i++ {
-			num = (source[i] >> shift) & radixMask
-			pos = counters[num]
-			buffer[pos] = source[i]
+			curr = source[i]
+			num = (curr >> shift) & radixMask
 			counters[num]++
+			pos = counters[num] - 1
+			buffer[pos] = curr
 		}
 		source, buffer = buffer, source
 	}
