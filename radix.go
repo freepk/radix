@@ -1,15 +1,16 @@
 package radix
 
 const (
-	radix       = 8
+	radix       = 16
 	numCounters = 1 << radix
+	radixMask   = numCounters - 1
 )
 
 func Ints(source, buffer []int, size int) {
 	var shift byte
 	var counters [numCounters]int
 	var pos, i, curr, prev int
-	var num byte
+	var num int
 	var sorted bool
 	for shift = 0; shift < (intSize * radix); shift += radix {
 		for i = 0; i < numCounters; i++ {
@@ -20,7 +21,7 @@ func Ints(source, buffer []int, size int) {
 		for i = 0; i < size; i++ {
 			curr = source[i]
 			sorted = sorted && (prev <= curr)
-			num = byte(curr >> shift)
+			num = (curr >> shift) & radixMask
 			counters[num]++
 			prev = curr
 		}
@@ -35,7 +36,7 @@ func Ints(source, buffer []int, size int) {
 			pos, counters[i] = (pos + counters[i]), pos
 		}
 		for i = 0; i < size; i++ {
-			num = byte(source[i] >> shift)
+			num = (source[i] >> shift) & radixMask
 			pos = counters[num]
 			buffer[pos] = source[i]
 			counters[num]++
